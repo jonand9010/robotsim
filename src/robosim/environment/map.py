@@ -69,6 +69,13 @@ class Environment:
         obstacle = Obstacle(x, y, self.grid_size)
         self.obstacles.append(obstacle)
 
+    def is_obstacle(self, x, y):
+        # Check if there's an obstacle at the given (x, y) position
+        for obstacle in self.obstacles:
+            if obstacle.collides(x, y, self.grid_size):
+                return True
+        return False
+
     def draw(self, screen):
         for obstacle in self.obstacles:
             obstacle.draw(screen)
