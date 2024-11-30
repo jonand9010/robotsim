@@ -1,12 +1,12 @@
 # main.py
 
 import pygame
+import random
 from robot import Robot
 from visualization import Visualization
 
 # Colors (define them here)
 BLACK = (0, 0, 0)
-
 
 # Screen dimensions and colors
 WIDTH, HEIGHT = 800, 600
@@ -19,9 +19,18 @@ END = (GRID_WIDTH - 2, GRID_HEIGHT - 2)
 # Clock for FPS
 clock = pygame.time.Clock()
 
+def generate_obstacles(grid, num_obstacles=50):
+    for _ in range(num_obstacles):
+        x = random.randint(1, GRID_WIDTH - 2)
+        y = random.randint(1, GRID_HEIGHT - 2)
+        if (x, y) != START and (x, y) != END:  # Ensure start and end are not obstacles
+            grid[y][x] = 1  # Mark the cell as an obstacle
+    return grid
+
 def main():
-    # Create the grid
+    # Create an empty grid and place obstacles
     grid = [[0 for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+    grid = generate_obstacles(grid)
 
     # Create Robot object
     robot = Robot(START, END, grid, GRID_WIDTH, GRID_HEIGHT)
@@ -37,12 +46,11 @@ def main():
     while running:
         screen.fill(BLACK)
 
-        # Draw grid, path, goal, and robot
+        # Draw grid, obstacles, path, goal, and robot
         visualization.draw_grid(grid)
         visualization.draw_path(robot.path)  # Draw the calculated path
         visualization.draw_robot(robot.position)
         visualization.draw_goal()  # Draw the goal
-        #robot.draw(screen, GRID_SIZE)  # Draw the robot
 
         # Move the robot step by step along the path
         if robot.path:

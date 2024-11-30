@@ -6,8 +6,9 @@ import pygame
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-GREEN = (200, 200, 200)
+GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+GRAY = (169, 169, 169)  # Color for obstacles
 
 # Visualization class to handle drawing the grid, path, robot, and goal
 class Visualization:
@@ -22,7 +23,10 @@ class Visualization:
     def draw_grid(self, grid):
         for y in range(self.grid_height):
             for x in range(self.grid_width):
-                color = WHITE if grid[y][x] == 0 else BLACK
+                if grid[y][x] == 0:
+                    color = WHITE  # Free space
+                elif grid[y][x] == 1:
+                    color = GRAY   # Obstacle
                 pygame.draw.rect(self.screen, color, (x * self.grid_size, y * self.grid_size, self.grid_size, self.grid_size))
 
     def draw_goal(self):
